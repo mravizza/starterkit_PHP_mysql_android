@@ -1,0 +1,44 @@
+#!/bin/bash
+# Pre-commit hook: Prüft auf Secrets und Syntax-Fehler
+# Aktivieren: git config core.hooksPath .githooks
+
+echo "Running pre-commit checks..."
+
+# 1. Prüfe auf hardcoded Secrets
+SECRETS_PATTERN='(password|secret|api_key|token)\s*=\s*["\x27][^"\x27]{8,}'
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+for file in $STAGED_FILES; do
+    if [[ "$file" == *.php ]] || [[ "$file" == *.kt ]] || [[ "$file" == *.properties ]]; then
+        if grep -iEn "$SECRETS_PATTERN" "$file" 2>/dev/null; then
+            echo "⚠ Mögliches Secret in: $file"
+            echo "  Bitte prüfen und ggf. in config.local.php / local.properties verschieben."
+            # Warnung, kein Block — für harten Block: exit 1
+        fi
+    fi
+done
+
+# 2. PHP Syntax-Check
+for file in $STAGED_FILES; do
+    if [[ "$file" == *.php ]]; then
+        php -l "$file" > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            echo "❌ PHP Syntax-Fehler in: $file"
+            exit 1
+        fi
+    fi
+done
+
+# 3. Prüfe auf verbotene Dateien
+FORBIDDEN=("config.local.php" ".ftp-credentials" "local.properties" ".env")
+for file in $STAGED_FILES; do
+    for pattern in "${FORBIDDEN[@]}"; do
+        if [[ "$file" == *"$pattern"* ]]; then
+            echo "❌ Geschützte Datei darf nicht committet werden: $file"
+            exit 1
+        fi
+    done
+done
+
+echo "✅ Pre-commit checks bestanden."
+exit 0

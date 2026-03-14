@@ -1,0 +1,44 @@
+# Claude Code
+.claude/settings.local.json
+.claude/worktrees/
+
+# Backend — Secrets & Runtime
+backend/config/config.local.php
+backend/uploads/*
+!backend/uploads/.htaccess
+backend/.ftp-credentials
+backend/debug_*.php
+
+# Android
+android-app/.gradle/
+android-app/build/
+android-app/app/build/
+android-app/local.properties
+android-app/.idea/
+android-app/*.iml
+android-app/app/*.iml
+android-app/captures/
+
+# Environment
+.env
+.env.*
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Dependencies (if ever added)
+node_modules/
+vendor/

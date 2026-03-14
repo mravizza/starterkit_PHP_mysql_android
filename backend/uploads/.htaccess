@@ -1,0 +1,7 @@
+# Keine PHP-Ausführung im Upload-Verzeichnis
+<FilesMatch "\.php$">
+    Deny from all
+</FilesMatch>
+
+# Keine Directory-Listing
+Options -Indexes

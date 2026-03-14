@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(git stash*)",
+      "Bash(php -S *)",
+      "Bash(cd android-app && ./gradlew *)",
+      "Bash(adb install*)",
+      "Bash(adb devices*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)"
+    ]
+  }
+}
