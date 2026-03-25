@@ -8,10 +8,11 @@ Ein **Claude Code Starterkit** für Projekte mit PHP-Backend und Android-App. En
 
 | Bereich | Dateien | Beschreibung |
 |---------|---------|-------------|
-| **Rules** | `.claude/rules/` | Clean Code, Feature-Docs, Release-Naming, Skill-Pipeline |
+| **Skills** | `.claude/skills/` | 12 spezialisierte Skills (siehe unten) — manuell via `/skill` aufrufbar und automatisch via Kontext ladbar |
+| **Rules** | `.claude/rules/` | Clean Code, Feature-Docs, Release-Naming, Version-Bump, Database-Migration |
 | **Hooks** | `.claude/hooks/` | Sensitive-File-Schutz, Destruktive-Befehle-Blocker, Schema-Guard, Feature-Docs-Reminder, Compact-Context, Windows-Notification |
-| **Skills** | `.claude/commands/` | 9 spezialisierte Skills (Architect, Backend, Frontend, Deploy, QA, Pentest, Requirements, UX-Review, User-Journeys) |
-| **Settings** | `.claude/settings.json` | Hooks-Konfiguration, Plugin-Platzhalter |
+| **Settings** | `.claude/settings.json` | Hooks-Konfiguration, media-pipeline Plugin |
+| **Launch** | `.claude/launch.json` | PHP Dev-Server Konfiguration |
 
 ### Dokumentationsstruktur (`docs/`)
 
@@ -20,6 +21,7 @@ Ein **Claude Code Starterkit** für Projekte mit PHP-Backend und Android-App. En
 | **PRD** | `docs/PRD.md` | Product Requirements Document (Architektur, NFR, Versionshistorie) |
 | **Roadmap** | `docs/Roadmap.md` | Produkt-Roadmap (getrennt von PRD für besseren Context) |
 | **Features** | `docs/features/` | Feature-Spezifikationen mit User Stories und Akzeptanzkriterien |
+| **DevDocs** | `docs/devdocs/` | Testfälle (UT/IT/E2E), Traceability Matrix |
 | **QA-Reports** | `docs/qa-check/` | QA-Berichte pro Version |
 | **Pentest-Reports** | `docs/pentest/` | Security-Berichte pro Version |
 
@@ -82,19 +84,54 @@ git add .
 git commit -m "Initial setup from starterkit_PHP_mysql_android"
 ```
 
-## Skills (Slash-Commands)
+## Skills
+
+Alle Skills liegen unter `.claude/skills/<name>/SKILL.md` und sind sowohl manuell (`/skill`) als auch automatisch (Kontext-basiert) ladbar.
+
+### Design & Planung
 
 | Skill | Befehl | Beschreibung |
 |-------|--------|-------------|
+| UX Discovery | `/ux-discovery` | Problemverständnis, Personas, Journey Maps, Wireframes |
+| Requirements | `/requirements` | Anforderungsanalyse, User Stories, Akzeptanzkriterien |
 | Architekt | `/architect` | Systemdesign, technische Entscheidungen |
+
+### Implementierung
+
+| Skill | Befehl | Beschreibung |
+|-------|--------|-------------|
 | Backend-Dev | `/backend-dev` | PHP API & Admin-Portal Entwicklung |
 | Frontend-Dev | `/frontend-dev` | Android Compose & Web-Templates |
 | Deploy | `/deploy` | Build, Versionierung, Deployment |
-| QA-Check | `/qa-check` | Qualitätssicherung & Testing |
+
+### Qualitätssicherung
+
+| Skill | Befehl | Beschreibung |
+|-------|--------|-------------|
+| QA-Check | `/qa-check` | Code-Qualität, Testausführung, Regressionen |
+| QA-Test-Run | `/qa-test-run` | Automatisierte Tests implementieren & ausführen |
+| UX-Review | `/ux-review` | UI-Validierung gegen Wireframes |
 | Pentest | `/pentest` | Security Penetration Testing |
-| Requirements | `/requirements` | Anforderungsanalyse & User Stories |
-| UX-Review | `/ux-review` | Seniorengerechte Benutzerführung |
 | User Journeys | `/user-journeys` | UX-Flows & Journey Mapping |
+
+### Marketing
+
+| Skill | Befehl | Beschreibung |
+|-------|--------|-------------|
+| Product Marketing Context | `/product-marketing-context` | Zentrales Marketing-Kontextdokument |
+
+## Entwicklungs-Pipeline (18 Schritte)
+
+```
+Design & Planung          → /ux-discovery → /requirements → /qa-test-cases → /architect
+Implementierung           → /backend-dev → /frontend-dev → /qa-test-run
+Qualitätssicherung        → /ux-review → /qa-check
+Staging & Abnahme         → /deploy staging → UAT
+Produktion & Release      → /deploy production → /deploy release → /pentest
+Post-Release              → /qa-test-run (Regression) → Roadmap-Bereinigung
+```
+
+Details: siehe `.claude/rules/feature-docs.md`
 
 ## Hooks
 
