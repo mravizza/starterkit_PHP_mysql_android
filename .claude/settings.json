@@ -61,5 +61,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "media-pipeline": true
   }
 }
